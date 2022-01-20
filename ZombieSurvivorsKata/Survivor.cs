@@ -29,7 +29,6 @@ namespace ZombieSurvivorsKata
             {
                 State = State.Dead;
             }
-            
         }
 
         public void UseAction()
@@ -39,7 +38,6 @@ namespace ZombieSurvivorsKata
             {
                 ActionCount--;
             }
-
         }
     }
 }

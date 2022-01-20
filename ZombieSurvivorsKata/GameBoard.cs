@@ -9,7 +9,6 @@ using Microsoft.VisualBasic.CompilerServices;
 namespace ZombieSurvivorsKata
 {
     public class GameBoard
-    { 
-
+    {
     }
 }
