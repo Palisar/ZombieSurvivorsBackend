@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.VisualBasic;
 
 namespace ZombieSurvivorsKata
 {
@@ -13,25 +9,39 @@ namespace ZombieSurvivorsKata
             State = State.Alive;
             ActionCount = 3;
             ActionsPerTurn = 3;
+            InReserve = new List<Equipment>();
+            ItemCapacity = 3;
+            ExperiencePoints = 0;
+            Level = Level.Blue;
         }
-
+        
         public sealed override State State { get; set; }
         public int ActionsPerTurn { get; }
         public int ActionCount { get; set; }
 
-        public void Wounded()
+        public Equipment? ActiveHand { get; set; }
+        public Equipment? OffHand { get; set; }
+        public List<Equipment> InReserve { get; set; }
+        public int ItemCapacity { get; set; }
+        public bool WoundedThisRound { get; set; }
+        public int ExperiencePoints { get; set; }
+
+        public Level Level { get; set; }
+
+        public void GotWounded()
         {
             if (this.Wounds < 2)
             {
                 Wounds++;
+                ItemCapacity--;
+                WoundedThisRound = true;
             }
             if (this.Wounds == 2)
             {
                 State = State.Dead;
             }
-            
         }
-
+        
         public void UseAction()
         {
             //TODO : Implement later on
@@ -39,7 +49,109 @@ namespace ZombieSurvivorsKata
             {
                 ActionCount--;
             }
+        }
 
+        public void EquipItem(int hand)
+        {
+
+        }
+        public void PickUpItem(Equipment equipment)
+        {
+            if (ActiveHand is null)
+            {
+                if (OffHand == equipment)
+                {
+                    OffHand = null;
+                }
+                if (InReserve.Contains(equipment))
+                {
+                    InReserve.Remove(equipment);
+                }
+                ActiveHand = equipment;
+            }
+            else if (OffHand is null)
+            {
+                if (ActiveHand == equipment)
+                {
+                    ActiveHand = null;
+                }
+                if (InReserve.Contains(equipment))
+                {
+                    InReserve.Remove(equipment);
+                }
+                OffHand = equipment;
+            }
+            else if (InReserve.Count < ItemCapacity)
+            {
+                InReserve.Add(equipment);
+            }
+            else
+            {
+                Console.WriteLine($"You do not have room for the {equipment}");
+            }
+        }
+
+        public void ReduceReserve(int index)
+        {
+            if (InReserve.Count > ItemCapacity)
+            {
+                InReserve.RemoveAt(index-1);
+            }
+        }
+
+        public void RemoveItemFromReserve(int? index)
+        {
+            //while (true)
+            //{
+            //    Console.Write("You cannot carry as much now, you must remove an equipment:\nChoose");
+            //    for (var i = 0; i < InReserve.Count; i++)
+            //    {
+            //        Console.WriteLine($"{i + 1}.{InReserve[i]}");
+            //    }
+
+            //    var key = Console.ReadKey(true).KeyChar;
+            //    while (key != '1' || key != '2' || key != '3')
+            //    {
+            //        key = Console.ReadKey(true).KeyChar;
+            //    }
+
+            //    Console.WriteLine($"You are about to remove {InReserve[(int)key]}...\nAre you sure ?");
+            //    var answer = Console.ReadKey(true).KeyChar;
+            //    while (answer != 'y' || answer != 'n' || answer != 'Y' || answer != 'N')
+            //    {
+            //        answer = Console.ReadKey(true).KeyChar;
+            //    }
+
+            //    if (char.ToLower(answer) == 'n')
+            //    {
+            //        continue;
+            //    }
+            //    else
+            //    {
+            //        InReserve.RemoveAt((int)key);
+            //    }
+            //    break;
+            //}
+
+        }
+
+
+        public void GainExperience()
+        {
+            ExperiencePoints++;
+            CheckLevel();
+        }
+
+        public void CheckLevel()
+        {
+            var values = Enum.GetValues(typeof(Level));
+            foreach (var level in values)
+            {
+                if (ExperiencePoints == (int)level)
+                {
+                    Level = (Level)level;
+                }
+            }
         }
     }
 }
