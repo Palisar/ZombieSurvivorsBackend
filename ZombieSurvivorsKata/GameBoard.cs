@@ -14,6 +14,7 @@ namespace ZombieSurvivorsKata
         {
             Survivors = new List<Survivor>();
             SurvivorsSpawned = false;
+            GameOverFlag = false;
         }
 
         public List<Survivor> Survivors { get; set; }
@@ -22,7 +23,7 @@ namespace ZombieSurvivorsKata
 
         public Survivor AddSurvivor(string name)
         {
-            var survivor = Survivors.Select(s => s.Name == name);
+            var survivor = Survivors.FirstOrDefault(s => s.Name == name);
             if (survivor is null)
             {
                 Survivors.Add(new Survivor(name));
