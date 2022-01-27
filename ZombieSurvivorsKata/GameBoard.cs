@@ -10,8 +10,11 @@ namespace ZombieSurvivorsKata
 {
     public class GameBoard
     {
-        public GameBoard()
+        private readonly GameLog _log;
+
+        public GameBoard(GameLog log)
         {
+            _log = log;
             Survivors = new List<Survivor>();
             SurvivorsSpawned = false;
             GameOverFlag = false;
@@ -27,11 +30,15 @@ namespace ZombieSurvivorsKata
             var survivor = Survivors.FirstOrDefault(s => s.Name == name);
             if (survivor is null)
             {
-                Survivors.Add(new Survivor(name));
+                Survivors.Add(new Survivor(name, _log));
+                if (!SurvivorsSpawned)
+                    _log.Message($"Game has begun at {DateTime.Now}!");
+
+                _log.Message($"{name} has joined the game.");
             }
 
             SurvivorsSpawned = true;
-
+            
             return Survivors.Last();
         }
 
@@ -39,6 +46,10 @@ namespace ZombieSurvivorsKata
         {
             Survivors.Remove(survivor);
             GameOverFlag = IsGameOver();
+            if (GameOverFlag)
+            {
+                _log.Message("Everyone has died.....\n\nGame Over");
+            }
         }
 
         public bool IsGameOver()
@@ -53,6 +64,7 @@ namespace ZombieSurvivorsKata
                 if (survivor.Level > Level)
                 {
                     Level = survivor.Level;
+                    _log.Message($"Game has now advanced to level {Level}!");
                 }
             }
         }
