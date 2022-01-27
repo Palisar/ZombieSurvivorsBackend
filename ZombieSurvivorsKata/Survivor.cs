@@ -1,12 +1,13 @@
 ﻿using Microsoft.VisualBasic;
+using ZombieSurvivorsKata.Interfaces;
 
 namespace ZombieSurvivorsKata
 {
     public class Survivor : Human
     {
-        private readonly GameLog _log;
+        private readonly IGamelog _log;
 
-        public Survivor(string name, GameLog log) : base(name)
+        public Survivor(string name, IGamelog log) : base(name)
         {
             _log = log;
             State = State.Alive;

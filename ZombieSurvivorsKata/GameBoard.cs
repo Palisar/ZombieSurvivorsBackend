@@ -5,14 +5,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualBasic.CompilerServices;
+using ZombieSurvivorsKata.Interfaces;
 
 namespace ZombieSurvivorsKata
 {
     public class GameBoard
     {
-        private readonly GameLog _log;
+        private readonly IGamelog _log;
 
-        public GameBoard(GameLog log)
+        public GameBoard(IGamelog log)
         {
             _log = log;
             Survivors = new List<Survivor>();
