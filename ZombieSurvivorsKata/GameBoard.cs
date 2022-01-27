@@ -15,8 +15,9 @@ namespace ZombieSurvivorsKata
             Survivors = new List<Survivor>();
             SurvivorsSpawned = false;
             GameOverFlag = false;
+            Level = Level.Blue;
         }
-
+        public Level Level { get; set; }
         public List<Survivor> Survivors { get; set; }
         public bool SurvivorsSpawned { get; set; }
         public bool GameOverFlag { get; set; }
@@ -45,6 +46,16 @@ namespace ZombieSurvivorsKata
             return SurvivorsSpawned && Survivors.Count < 1;
         }
 
+        public void CheckSurvivorsLevel()
+        {
+            foreach (var survivor in Survivors)
+            {
+                if (survivor.Level > Level)
+                {
+                    Level = survivor.Level;
+                }
+            }
+        }
 
     }
 }
