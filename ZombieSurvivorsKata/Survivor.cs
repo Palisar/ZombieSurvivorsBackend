@@ -11,8 +11,10 @@ namespace ZombieSurvivorsKata
             ActionsPerTurn = 3;
             InReserve = new List<Equipment>();
             ItemCapacity = 3;
+            ExperiencePoints = 0;
+            Level = Level.Blue;
         }
-
+        
         public sealed override State State { get; set; }
         public int ActionsPerTurn { get; }
         public int ActionCount { get; set; }
@@ -22,6 +24,9 @@ namespace ZombieSurvivorsKata
         public List<Equipment> InReserve { get; set; }
         public int ItemCapacity { get; set; }
         public bool WoundedThisRound { get; set; }
+        public int ExperiencePoints { get; set; }
+
+        public Level Level { get; set; }
 
         public void GotWounded()
         {
@@ -128,6 +133,25 @@ namespace ZombieSurvivorsKata
             //    break;
             //}
 
+        }
+
+
+        public void GainExperience()
+        {
+            ExperiencePoints++;
+            CheckLevel();
+        }
+
+        public void CheckLevel()
+        {
+            var values = Enum.GetValues(typeof(Level));
+            foreach (var level in values)
+            {
+                if (ExperiencePoints == (int)level)
+                {
+                    Level = (Level)level;
+                }
+            }
         }
     }
 }
