@@ -4,8 +4,11 @@ namespace ZombieSurvivorsKata
 {
     public class Survivor : Human
     {
-        public Survivor(string name) : base(name)
+        private readonly GameLog _log;
+
+        public Survivor(string name, GameLog log) : base(name)
         {
+            _log = log;
             State = State.Alive;
             ActionCount = 3;
             ActionsPerTurn = 3;
@@ -30,6 +33,7 @@ namespace ZombieSurvivorsKata
 
         public void GotWounded()
         {
+            _log.Message($"{Name} has been wounded!");
             if (this.Wounds < 2)
             {
                 Wounds++;
@@ -39,6 +43,7 @@ namespace ZombieSurvivorsKata
             if (this.Wounds == 2)
             {
                 State = State.Dead;
+                _log.Message($"{Name} has died...");
             }
         }
         
@@ -57,6 +62,8 @@ namespace ZombieSurvivorsKata
         }
         public void PickUpItem(Equipment equipment)
         {
+            _log.Message($"{this.Name} has picked up a {equipment}");
+
             if (ActiveHand is null)
             {
                 if (OffHand == equipment)
@@ -68,6 +75,7 @@ namespace ZombieSurvivorsKata
                     InReserve.Remove(equipment);
                 }
                 ActiveHand = equipment;
+                
             }
             else if (OffHand is null)
             {
@@ -149,6 +157,7 @@ namespace ZombieSurvivorsKata
             {
                 if (ExperiencePoints == (int)level)
                 {
+                    _log.Message($"{Name} is now level {level}!");
                     Level = (Level)level;
                 }
             }
