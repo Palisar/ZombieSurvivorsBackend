@@ -5,12 +5,13 @@ namespace ZombieSurvival_Tests
 {
     public class SurvivorTests
     {
+        private static GameLog _log;
         private readonly Survivor sut;
         private readonly List<Equipment> equipment = new List<Equipment>();
 
         public SurvivorTests()
         {
-            sut = new Survivor("Paul");
+            sut = new Survivor("Paul", _log);
             equipment.Add(new Equipment("Bat"));
             equipment.Add(new Equipment("Pan"));
             equipment.Add(new Equipment("Water"));
