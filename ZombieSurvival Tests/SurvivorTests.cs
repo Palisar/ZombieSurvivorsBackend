@@ -5,7 +5,7 @@ namespace ZombieSurvival_Tests
 {
     public class SurvivorTests
     {
-        private static GameLog _log;
+        private static GameLog _log = new GameLog();
         private readonly Survivor sut;
         private readonly List<Equipment> equipment = new List<Equipment>();
 
@@ -124,6 +124,19 @@ namespace ZombieSurvival_Tests
 
             sut.InReserve.Count.Should().Be(2);
             sut.InReserve[1].Should().Be(equipment[3]);
+        }
+
+        [Fact]
+        public void SurvivorGainsExperience_Then_SurvivorLevelsUp()
+        {
+            int experienceGain = 0;
+            while (experienceGain < 8)
+            {
+                sut.GainExperience();
+                experienceGain++;
+            }
+
+            sut.Level.Should().Be(Level.Yellow);
         }
     }
 }

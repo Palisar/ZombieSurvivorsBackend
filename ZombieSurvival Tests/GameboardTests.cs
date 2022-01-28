@@ -21,5 +21,14 @@ namespace ZombieSurvival_Tests
             _board.RemoveSurvivor(_board.Survivors[0]);
             _board.GameOverFlag.Should().BeTrue();
         }
+
+        [Fact]
+        public void SurvivorLevelsUp_Then_BoardLevelsUp()
+        {
+            _board.AddSurvivor("Wham");
+            _board.Survivors[0].Level = Level.Orange;
+            _board.CheckSurvivorsLevel();
+            _board.Level.Should().Be(Level.Orange);
+        }
     }
 }
