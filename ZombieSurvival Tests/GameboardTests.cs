@@ -3,22 +3,32 @@ namespace ZombieSurvival_Tests
 {
     public class GameboardTests
     {
-        private readonly GameBoard board = new GameBoard();
-        private readonly Survivor sut = new Survivor("Wham");
+        static GameLog _log = new GameLog();
+        private GameBoard _board = new GameBoard(_log);
+        private Survivor sut = new Survivor("Wham", _log);
         [Fact]
         public void SurvivorAdded_Then_GameHasStarted()
         {
-            board.AddSurvivor("Paul");
-            board.SurvivorsSpawned.Should().BeTrue();
+            _board.AddSurvivor("Paul");
+            _board.SurvivorsSpawned.Should().BeTrue();
         }
 
         [Fact]
         public void LastSurvivorDied_Then_GameIsOver()
         {
-            board.AddSurvivor("sur");
+            _board.AddSurvivor("sur");
 
-            board.RemoveSurvivor(board.Survivors[0]);
-            board.GameOverFlag.Should().BeTrue();
+            _board.RemoveSurvivor(_board.Survivors[0]);
+            _board.GameOverFlag.Should().BeTrue();
+        }
+
+        [Fact]
+        public void SurvivorLevelsUp_Then_BoardLevelsUp()
+        {
+            _board.AddSurvivor("Wham");
+            _board.Survivors[0].Level = Level.Orange;
+            _board.CheckSurvivorsLevel();
+            _board.Level.Should().Be(Level.Orange);
         }
     }
 }

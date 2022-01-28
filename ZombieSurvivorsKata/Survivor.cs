@@ -1,12 +1,13 @@
 ﻿using Microsoft.VisualBasic;
+using ZombieSurvivorsKata.Interfaces;
 
 namespace ZombieSurvivorsKata
 {
     public class Survivor : Human
     {
-        private readonly GameLog _log;
+        private readonly IGamelog _log;
 
-        public Survivor(string name, GameLog log) : base(name)
+        public Survivor(string name, IGamelog log) : base(name)
         {
             _log = log;
             State = State.Alive;
@@ -22,25 +23,28 @@ namespace ZombieSurvivorsKata
         public int ActionsPerTurn { get; }
         public int ActionCount { get; set; }
 
-        public Equipment? ActiveHand { get; set; }
-        public Equipment? OffHand { get; set; }
-        public List<Equipment> InReserve { get; set; }
-        public int ItemCapacity { get; set; }
-        public bool WoundedThisRound { get; set; }
-        public int ExperiencePoints { get; set; }
+        public Equipment? ActiveHand { get; private set; }
+        public Equipment? OffHand { get; private set; }
+        public List<Equipment> InReserve { get; private set; }
+        public int ItemCapacity { get; private set; }
+        public bool WoundedThisRound { get; private set; }
+        public int ExperiencePoints { get; private set; }
+
+        public List<BaseSkill> PotentialSkills { get; private set; }
+        public List<BaseSkill> UnlockedSkills { get; set; }
 
         public Level Level { get; set; }
 
         public void GotWounded()
         {
             _log.Message($"{Name} has been wounded!");
-            if (this.Wounds < 2)
+            if (this.Wounds < this.WoundsToDeath)
             {
                 Wounds++;
                 ItemCapacity--;
                 WoundedThisRound = true;
             }
-            if (this.Wounds == 2)
+            if (this.Wounds == this.WoundsToDeath)
             {
                 State = State.Dead;
                 _log.Message($"{Name} has died...");
@@ -75,7 +79,6 @@ namespace ZombieSurvivorsKata
                     InReserve.Remove(equipment);
                 }
                 ActiveHand = equipment;
-                
             }
             else if (OffHand is null)
             {
@@ -95,7 +98,7 @@ namespace ZombieSurvivorsKata
             }
             else
             {
-                Console.WriteLine($"You do not have room for the {equipment}");
+                _log.Message($"You do not have room for the {equipment}");
             }
         }
 
@@ -161,6 +164,11 @@ namespace ZombieSurvivorsKata
                     Level = (Level)level;
                 }
             }
+        }
+
+        private void PopulatePotentialSkills()
+        {
+
         }
     }
 }
