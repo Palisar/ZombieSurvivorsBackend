@@ -22,7 +22,7 @@ namespace ZombieSurvivorsKata
             Level = Level.Blue;
         }
         public Level Level { get; set; }
-        public List<Survivor> Survivors { get; set; }
+        public List<Survivor> Survivors { get; }
         public bool SurvivorsSpawned { get; set; }
         public bool GameOverFlag { get; set; }
 

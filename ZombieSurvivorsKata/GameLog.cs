@@ -12,8 +12,8 @@ namespace ZombieSurvivorsKata
     {
         public void Message(string message)
         {
-            Console.WriteLine(message);
             Debug.WriteLine(message);
+            Console.WriteLine(message);
         }
     }
 }

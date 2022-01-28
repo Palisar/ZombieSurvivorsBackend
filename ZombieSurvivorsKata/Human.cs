@@ -18,10 +18,12 @@ namespace ZombieSurvivorsKata
         {
             this.Name = name;
             this.Wounds = 0;
+            this.WoundsToDeath = 2;
         }
 
         public string Name { get; }
         public int Wounds { get; set; }
+        public int WoundsToDeath { get; set; }
 
         public abstract State State { get; set; }
     }
