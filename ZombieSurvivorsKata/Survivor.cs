@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualBasic;
 using ZombieSurvivorsKata.Interfaces;
+using ZombieSurvivorsKata.Skills;
 
 namespace ZombieSurvivorsKata
 {
@@ -23,16 +24,14 @@ namespace ZombieSurvivorsKata
         public int ActionsPerTurn { get; }
         public int ActionCount { get; set; }
 
+        public SkillTree PotentialSkills { get; private set; }
         public Equipment? ActiveHand { get; private set; }
         public Equipment? OffHand { get; private set; }
         public List<Equipment> InReserve { get; private set; }
         public int ItemCapacity { get; private set; }
         public bool WoundedThisRound { get; private set; }
         public int ExperiencePoints { get; private set; }
-
-        public List<BaseSkill> PotentialSkills { get; private set; }
-        public List<BaseSkill> UnlockedSkills { get; set; }
-
+        
         public Level Level { get; set; }
 
         public void GotWounded()

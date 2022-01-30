@@ -15,6 +15,6 @@ namespace ZombieSurvivorsKata.Data
             SkillsDatabase.Add(new Tough());
         }
 
-        public List<BaseSkill> SkillsDatabase;
+        public List<BaseSkill> SkillsDatabase = new List<BaseSkill>();
     }
 }

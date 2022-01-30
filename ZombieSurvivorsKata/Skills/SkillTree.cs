@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Buffers.Text;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,18 +13,44 @@ namespace ZombieSurvivorsKata.Skills
         private Random random = new();
         public SkillTree(SkillDatabase skills)
         {
-            PotentialSkills.Add(new ExtraAction());
-            for (int i = 0; i < 3; i++)
-            {
-                int index = random.Next(0, skills.SkillsDatabase.Count);
-                PotentialSkills.Add(skills.SkillsDatabase[index]);
-                skills.SkillsDatabase.RemoveAt(index);
-            }
+            GetBlueSkill(skills);
+            YellowSkill = new ExtraAction();
+            PopulatePotentialOrangeSkills(skills);
+            PopulatePotentialRedSkills(skills);
+        }
+        public BaseSkill BlueSkill { get; private set; }
+        public BaseSkill YellowSkill { get; private set; }
 
+        public BaseSkill OrangeSkill { get; private set; }
+        public  BaseSkill RedSkill { get; private set; }
+        public BaseSkill[] PotentialOrangeSkills { get; private set; } = new BaseSkill[2];
+        public BaseSkill[] PotentialRedSkills { get; private set; } = new BaseSkill[3];
+
+        private void GetBlueSkill(SkillDatabase skills)
+        {
+            var index = random.Next(0, skills.SkillsDatabase.Count);
+            BlueSkill = skills.SkillsDatabase[random.Next(0, skills.SkillsDatabase.Count)];
+            skills.SkillsDatabase.RemoveAt(index);
         }
 
-        public List<object> PotentialSkills { get; set; }
+        private void PopulatePotentialOrangeSkills(SkillDatabase skills)
+        {
+            for (var i = 0; i < PotentialOrangeSkills.Length; i++)
+            {
+                var index = random.Next(0, skills.SkillsDatabase.Count);
+                PotentialOrangeSkills[i] = skills.SkillsDatabase[index];
+                skills.SkillsDatabase.RemoveAt(index);
+            }
+        }
 
-        
+        private void PopulatePotentialRedSkills(SkillDatabase skills)
+        {
+            for (var i = 0; i < PotentialRedSkills.Length; i++)
+            {
+                var index = random.Next(0, skills.SkillsDatabase.Count);
+                PotentialRedSkills[i] = skills.SkillsDatabase[index];
+                skills.SkillsDatabase.RemoveAt(index);
+            }
+        }
     }
 }
